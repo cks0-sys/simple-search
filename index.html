@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>간단한 검색 사이트</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 40px;
+    }
+    input {
+      padding: 8px;
+      font-size: 16px;
+    }
+    button {
+      padding: 8px 12px;
+      font-size: 16px;
+      margin-left: 5px;
+    }
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>검색</h2>
+
+  <input type="text" id="searchInput" placeholder="검색어 입력">
+  <button onclick="search()">검색</button>
+
+  <div id="result"></div>
+
+  <script>
+    const data = {
+      a: "b",
+      hello: "안녕하세요",
+      cat: "고양이"
+    };
+
+    function search() {
+      const input = document
+        .getElementById("searchInput")
+        .value
+        .toLowerCase();
+
+      const result = document.getElementById("result");
+
+      if (data[input]) {
+        result.textContent = data[input];
+      } else {
+        result.textContent = "결과가 없습니다";
+      }
+    }
+  </script>
+
+</body>
+</html>

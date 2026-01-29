@@ -8,20 +8,39 @@
       font-family: Arial, sans-serif;
       padding: 40px;
     }
+
     input {
       padding: 8px;
       font-size: 16px;
-      width: 250px;
+      width: 260px;
     }
+
     button {
       padding: 8px 14px;
       font-size: 16px;
       margin-left: 6px;
     }
+
     #result {
       margin-top: 20px;
       font-size: 18px;
       font-weight: bold;
+    }
+
+    /* 자동완성 리스트 */
+    #suggestions {
+      border: 1px solid #ccc;
+      max-width: 260px;
+      margin-top: 4px;
+    }
+
+    .item {
+      padding: 6px;
+      cursor: pointer;
+    }
+
+    .item:hover {
+      background-color: #eee;
     }
   </style>
 </head>
@@ -29,9 +48,14 @@
 
   <h2>이름 검색</h2>
 
-  <input id="searchInput" placeholder="이름을 입력하세요" />
+  <input
+    id="searchInput"
+    placeholder="이름을 입력하세요"
+    oninput="autoComplete()"
+  />
   <button onclick="search()">검색</button>
 
+  <div id="suggestions"></div>
   <div id="result"></div>
 
   <script>
@@ -349,23 +373,49 @@
   "CNINE_300000": "30000"
 };
 
+    /* 🔍 자동완성 + 부분검색 */
+    function autoComplete() {
+      const input = document
+        .getElementById("searchInput")
+        .value
+        .trim();
+
+      const suggestions = document.getElementById("suggestions");
+      suggestions.innerHTML = "";
+
+      if (input === "") return;
+
+      for (const key in data) {
+        if (key.includes(input)) {
+          const div = document.createElement("div");
+          div.className = "item";
+          div.innerText = `${key} → ${data[key]}`;
+
+          div.onclick = () => {
+            document.getElementById("searchInput").value = key;
+            suggestions.innerHTML = "";
+            document.getElementById("result").innerText =
+              `결과: ${data[key]}`;
+          };
+
+          suggestions.appendChild(div);
+        }
+      }
+    }
+
+    /* 🔎 검색 버튼 */
     function search() {
       const input = document
         .getElementById("searchInput")
         .value
         .trim();
 
-      const resultBox = document.getElementById("result");
-
-      if (input === "") {
-        resultBox.innerText = "이름을 입력해 주세요.";
-        return;
-      }
+      const result = document.getElementById("result");
 
       if (data[input]) {
-        resultBox.innerText = `결과: ${data[input]}`;
+        result.innerText = `결과: ${data[input]}`;
       } else {
-        resultBox.innerText = "검색 결과가 없습니다.";
+        result.innerText = "검색 결과가 없습니다.";
       }
     }
   </script>

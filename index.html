@@ -374,51 +374,57 @@
 };
 
     /* 🔍 자동완성 + 부분검색 */
-    function autoComplete() {
-      const input = document
-        .getElementById("searchInput")
-        .value
-        .trim();
+   function autoComplete() {
+  const input = document
+    .getElementById("searchInput")
+    .value
+    .trim()
+    .toLowerCase(); // ⭐ 여기 추가
 
-      const suggestions = document.getElementById("suggestions");
-      suggestions.innerHTML = "";
+  const suggestions = document.getElementById("suggestions");
+  suggestions.innerHTML = "";
 
-      if (input === "") return;
+  if (input === "") return;
 
-      for (const key in data) {
-        if (key.includes(input)) {
-          const div = document.createElement("div");
-          div.className = "item";
-          div.innerText = `${key} → ${data[key]}`;
+  for (const key in data) {
+    if (key.toLowerCase().includes(input)) { // ⭐ 여기 수정
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerText = `${key} → ${data[key]}`;
 
-          div.onclick = () => {
-            document.getElementById("searchInput").value = key;
-            suggestions.innerHTML = "";
-            document.getElementById("result").innerText =
-              `결과: ${data[key]}`;
-          };
+      div.onclick = () => {
+        document.getElementById("searchInput").value = key;
+        suggestions.innerHTML = "";
+        document.getElementById("result").innerText =
+          `결과: ${data[key]}`;
+      };
 
-          suggestions.appendChild(div);
-        }
-      }
+      suggestions.appendChild(div);
     }
+  }
+}
 
     /* 🔎 검색 버튼 */
-    function search() {
-      const input = document
-        .getElementById("searchInput")
-        .value
-        .trim();
+function search() {
+  const input = document
+    .getElementById("searchInput")
+    .value
+    .trim()
+    .toLowerCase(); // ⭐ 핵심
 
-      const result = document.getElementById("result");
+  const result = document.getElementById("result");
 
-      if (data[input]) {
-        result.innerText = `결과: ${data[input]}`;
-      } else {
-        result.innerText = "검색 결과가 없습니다.";
-      }
+  for (const key in data) {
+    if (key.toLowerCase() === input) { // ⭐ 핵심
+      result.innerText = `결과: ${data[key]}`;
+      return;
     }
+  }
+
+  result.innerText = "검색 결과가 없습니다.";
+}
   </script>
 
 </body>
 </html>
+
